@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		{% block head_title %}Hello, World!{% endblock %}
+	</title>
+	
+	<!-- Bootstrap CSS -->
+	<link type="text/css" rel="stylesheet" href="{{ asset('bundles/virtualstaffexam/css/bootstrap/bootstrap.css') }}" />
+	<link type="text/css" rel="stylesheet" href="{{ asset('bundles/virtualstaffexam/css/bootstrap/bootstrap-responsive.css') }}" />
+	<!-- Bootstrap CSS -->
+	
+	<link type="text/css" rel="stylesheet" href="{{ asset('bundles/virtualstaffexam/css/style.css') }}" />
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/jquery.js') }}"></script>
+	
+	<!-- Backbone and Underscore JS -->
+	<script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/backbone/underscore.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/backbone/backbone.js') }}"></script>
+	<!-- Backbone and Underscore JS -->
+
+	<!-- Bootstrap JS -->
+	<script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/bootstrap/bootstrap.js') }}"></script>
+	<!-- Bootstrap JS -->
+
+	{% block head_extra %}{% endblock %}
+</head>
+
+<body>
+	<div id="head" class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#">
+					VirtualStaff Exam
+				</a>
+				<form action="" class="navbar-search pull-left">
+					<input type="text" placeholder="Search" class="search-query span3">
+				</form>
+				
+				<ul class="nav pull-right">
+					<li><a href="#">Home</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div id="body">
+		<div class="container">
+			{% block content %}{% endblock %}
+		</div>
+	</div>
+
+	{% block body_extra %}{% endblock %}
+</body>
+</html>

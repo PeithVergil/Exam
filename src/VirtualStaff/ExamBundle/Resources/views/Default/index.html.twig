@@ -1,0 +1,104 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+<div class="row-fluid">
+	<div class="span12">
+		<button id="btn-add" class="btn btn-primary">
+			Add Record
+		</button>
+		<button id="btn-del" class="btn btn-danger">
+			Delete
+		</button>
+		<form id="form-records">
+			<table id="records" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="col-all">
+							<input type="checkbox" id="ckbx-all" />
+						</th>
+						<th>ID</th>
+						<th>Username</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th class="col-edt">
+							&nbsp;
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for record in records %}
+						<tr>
+							<td>
+								<input type="checkbox" name="record[]" value="{{ record.id }}" class="ckbx-usr" />
+							</td>
+							<td>{{ record.id }}</td>
+							<td>{{ record.usrnm }}</td>
+							<td>{{ record.fname }}</td>
+							<td>{{ record.lname }}</td>
+							<td>
+								<a href="#" class="btn btn-edt" value="{{ record.id }}">Edit</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</form>
+	</div>
+</div>
+{% endblock %}
+
+{% block body_extra %}
+
+<div class="modal hide fade in" id="mod-add">
+<form method="post">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>Add Record</h3>
+	</div>
+
+	<div class="modal-body">
+		<div>
+			<label for="usrnm">Username</label>
+			<input type="text" name="usrnm" id="usrnm" />
+			<div class="clear"></div>
+		</div>
+		<div>
+			<label for="fname">First Name</label>
+			<input type="text" name="fname" id="fname" />
+			<div class="clear"></div>
+		</div>
+		<div>
+			<label for="lname">Last Name</label>
+			<input type="text" name="lname" id="lname" />
+			<div class="clear"></div>
+		</div>
+
+	</div>
+
+	<div class="modal-footer">
+		<input type="submit" value="Save" class="btn btn-primary" />
+	</div>
+</form>
+</div>
+
+<script type="text/template" id="tpl-record-row">
+<tr>
+	<td>
+		<input type="checkbox" name="record[]" value="<%= record.usrid %>" class="ckbx-usr" />
+	</td>
+	<td><%= record.usrid %></td>
+	<td><%= record.usrnm %></td>
+	<td><%= record.fname %></td>
+	<td><%= record.lname %></td>
+	<td>
+		<a href="#" class="btn btn-edt" value="<%= record.usrid %>">Edit</a>
+	</td>
+</tr>
+</script>
+
+<script type="text/javascript">
+var URL_RECORD_ADD = "{{ path('record_add') }}";
+var URL_RECORD_DEL = "{{ path('record_del') }}";
+</script>
+<script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/exam.js') }}"></script>
+{% endblock %}

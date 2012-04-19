@@ -1,0 +1,24 @@
+#records {
+	margin: 20px 0;
+}
+
+#records .col-all {
+	width: 15px;
+}
+
+#records .col-edt {
+	width: 45px;
+}
+
+#mod-add form {
+	margin: 0;
+}
+
+form label {
+	float: left;
+	width: 35%;
+}
+
+.clear {
+	clear: both;
+}
