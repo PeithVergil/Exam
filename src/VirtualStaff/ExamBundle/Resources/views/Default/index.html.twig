@@ -64,6 +64,7 @@
 </div>
 
 <script type="text/template" id="tpl-modal-form">
+<input type="hidden" name="usrid" value="<%= usrid %>" />
 <div>
 	<label for="usrnm">Username</label>
 	<input type="text" name="usrnm" id="usrnm" value="<%= usrnm %>" />
@@ -100,6 +101,7 @@
 var URL_RECORD_ALL = "{{ path('record_all') }}";
 var URL_RECORD_ADD = "{{ path('record_add') }}";
 var URL_RECORD_DEL = "{{ path('record_del') }}";
+var URL_RECORD_EDT = "{{ path('record_edt') }}";
 </script>
 <script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/exam.js') }}"></script>
 {% endblock %}

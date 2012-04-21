@@ -76,6 +76,7 @@
 			var self = this;
 
 			self.$el.find('.modal-body').html(self.tpl({
+				usrid: '',
 				usrnm: '',
 				fname: '',
 				lname: ''
@@ -124,7 +125,11 @@
 			e.preventDefault();
 
 			var form = this.$el.find('form');
-			alert(form.serialize());
+
+			$.post(URL_RECORD_EDT, form.serialize(), function(response) {
+			}, 'json');
+
+			this.hide();
 		}
 	});
 	var edtRecordView = new EdtRecordView;
@@ -144,7 +149,17 @@
 		},
 
 		onClick_Del: function() {
-			alert('del');
+			var data = $('#form-records').serialize();
+
+			$.post(URL_RECORD_DEL, data, function(response) {
+				$('.ckbx-usr:checked').each(function() {
+					var $row = $(this).parent().parent();
+
+					$row.fadeOut('slow', function() {
+						$row.remove();
+					});
+				});
+			}, 'json');
 		},
 
 		onClick_Edt: function(e) {

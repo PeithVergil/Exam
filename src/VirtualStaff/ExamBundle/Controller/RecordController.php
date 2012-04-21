@@ -80,4 +80,27 @@ class RecordController extends Controller {
 
 	return new Response(json_encode(array()));
     }
+
+    /**
+     * @Route("/record/edt", name="record_edt", defaults={"_format"="json"})
+     * @Method({"POST"})
+     */
+    public function edtAction(Request $request) {
+	$usrid = $request->request->get('usrid');
+        $usrnm = $request->request->get('usrnm');
+        $fname = $request->request->get('fname');
+        $lname = $request->request->get('lname');
+
+	$repo = $this->getDoctrine()->getRepository('VirtualStaffExamBundle:Record');
+	$em   = $this->getDoctrine()->getEntityManager();
+
+	$rec  = $repo->findOneById($usrid);
+
+	$rec->setUsrnm($usrnm);
+	$rec->setFname($fname);
+	$rec->setLname($lname);
+	$em->flush();
+
+	return new Response(json_encode(array()));
+    }
 }
