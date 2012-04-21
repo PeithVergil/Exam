@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller {
     /**
-     * @Route("/home")
+     * @Route("/home", name="home")
      */
     public function indexAction() {
 	$repo = $this->getDoctrine()->getRepository('VirtualStaffExamBundle:Record');

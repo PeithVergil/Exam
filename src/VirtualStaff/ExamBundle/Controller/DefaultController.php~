@@ -12,7 +12,6 @@ class DefaultController extends Controller {
      */
     public function indexAction() {
 	$repo = $this->getDoctrine()->getRepository('VirtualStaffExamBundle:Record');
-	$recs = $repo->findAll();
 
         return $this->render('VirtualStaffExamBundle:Default:index.html.twig', array(
 		'records' => $repo->findAll()

@@ -26,20 +26,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for record in records %}
-						<tr>
-							<td>
-								<input type="checkbox" name="record[]" value="{{ record.id }}" class="ckbx-usr" />
-							</td>
-							<td>{{ record.id }}</td>
-							<td>{{ record.usrnm }}</td>
-							<td>{{ record.fname }}</td>
-							<td>{{ record.lname }}</td>
-							<td>
-								<a href="#" class="btn btn-edt" value="{{ record.id }}">Edit</a>
-							</td>
-						</tr>
-					{% endfor %}
 				</tbody>
 			</table>
 		</form>
@@ -49,54 +35,69 @@
 
 {% block body_extra %}
 
-<div class="modal hide fade in" id="mod-add">
+<div class="modal hide fade in" id="modal-form-add">
 <form method="post">
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
-		<h3>Add Record</h3>
+		<h3>Add New Record</h3>
 	</div>
-
 	<div class="modal-body">
-		<div>
-			<label for="usrnm">Username</label>
-			<input type="text" name="usrnm" id="usrnm" />
-			<div class="clear"></div>
-		</div>
-		<div>
-			<label for="fname">First Name</label>
-			<input type="text" name="fname" id="fname" />
-			<div class="clear"></div>
-		</div>
-		<div>
-			<label for="lname">Last Name</label>
-			<input type="text" name="lname" id="lname" />
-			<div class="clear"></div>
-		</div>
-
 	</div>
-
 	<div class="modal-footer">
 		<input type="submit" value="Save" class="btn btn-primary" />
 	</div>
 </form>
 </div>
 
-<script type="text/template" id="tpl-record-row">
+<div class="modal hide fade in" id="modal-form-edt">
+<form method="post">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>Edit Record</h3>
+	</div>
+	<div class="modal-body">
+	</div>
+	<div class="modal-footer">
+		<input type="submit" value="Save" class="btn btn-primary" />
+	</div>
+</form>
+</div>
+
+<script type="text/template" id="tpl-modal-form">
+<div>
+	<label for="usrnm">Username</label>
+	<input type="text" name="usrnm" id="usrnm" value="<%= usrnm %>" />
+	<div class="clear"></div>
+</div>
+<div>
+	<label for="fname">First Name</label>
+	<input type="text" name="fname" id="fname" value="<%= fname %>" />
+	<div class="clear"></div>
+</div>
+<div>
+	<label for="lname">Last Name</label>
+	<input type="text" name="lname" id="lname" value="<%= lname %>" />
+	<div class="clear"></div>
+</div>
+</script>
+
+<script type="text/template" id="tpl-record">
 <tr>
 	<td>
-		<input type="checkbox" name="record[]" value="<%= record.usrid %>" class="ckbx-usr" />
+		<input type="checkbox" name="record[]" value="<%= usrid %>" class="ckbx-usr" />
 	</td>
-	<td><%= record.usrid %></td>
-	<td><%= record.usrnm %></td>
-	<td><%= record.fname %></td>
-	<td><%= record.lname %></td>
+	<td><%= usrid %></td>
+	<td><%= usrnm %></td>
+	<td><%= fname %></td>
+	<td><%= lname %></td>
 	<td>
-		<a href="#" class="btn btn-edt" value="<%= record.usrid %>">Edit</a>
+		<a href="#" class="btn btn-edt" value="<%= usrid %>">Edit</a>
 	</td>
 </tr>
 </script>
 
 <script type="text/javascript">
+var URL_RECORD_ALL = "{{ path('record_all') }}";
 var URL_RECORD_ADD = "{{ path('record_add') }}";
 var URL_RECORD_DEL = "{{ path('record_del') }}";
 </script>

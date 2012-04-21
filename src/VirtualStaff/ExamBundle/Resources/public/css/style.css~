@@ -7,10 +7,10 @@
 }
 
 #records .col-edt {
-	width: 50px;
+	width: 45px;
 }
 
-#mod-add form {
+#modal-form form {
 	margin: 0;
 }
 

@@ -10,7 +10,8 @@
 	width: 45px;
 }
 
-#mod-add form {
+#modal-form-add form,
+#modal-form-edt form {
 	margin: 0;
 }
 

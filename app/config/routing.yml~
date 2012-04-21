@@ -1,0 +1,13 @@
+_welcome:
+    pattern:  /
+    defaults: { _controller: VirtualStaffExamBundle:Default:index }
+
+VirtualStaffExamBundle:
+    resource: "@VirtualStaffExamBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+# Internal routing configuration to handle ESI
+#_internal:
+#   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#   prefix:   /_internal

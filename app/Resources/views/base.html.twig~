@@ -25,6 +25,7 @@
 
 	<!-- Bootstrap JS -->
 	<script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/bootstrap/bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/virtualstaffexam/js/bootstrap/bootstrap-modal.js') }}"></script>
 	<!-- Bootstrap JS -->
 
 	{% block head_extra %}{% endblock %}
@@ -37,9 +38,6 @@
 				<a class="brand" href="#">
 					VirtualStaff Exam
 				</a>
-				<form action="" class="navbar-search pull-left">
-					<input type="text" placeholder="Search" class="search-query span3">
-				</form>
 				
 				<ul class="nav pull-right">
 					<li><a href="#">Home</a></li>

@@ -14,6 +14,29 @@ use VirtualStaff\ExamBundle\Entity\Record;
 class RecordController extends Controller {
 
     /**
+     * @Route("/record/all", name="record_all", defaults={"_format"="json"})
+     * @Method({"GET"})
+     */
+    public function allAction(Request $request) {
+        $repo = $this->getDoctrine()->getRepository('VirtualStaffExamBundle:Record');
+	$recs = $repo->findAll();
+
+	$records = array();
+	foreach ($recs as $rec) {
+		$records[] = array(
+			'usrid' => $rec->getId(),
+			'usrnm' => $rec->getUsrnm(),
+			'fname' => $rec->getFname(),
+			'lname' => $rec->getLname()
+		);
+	}
+
+        return new Response(json_encode(array(
+	    'records' => $records
+	)));
+    }
+
+    /**
      * @Route("/record/add", name="record_add", defaults={"_format"="json"})
      * @Method({"POST"})
      */

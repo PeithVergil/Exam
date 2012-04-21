@@ -1,26 +1,60 @@
 (function($) {$(function() {
 	var Record = Backbone.Model.extend({
+		idAttribute: 'usrid'
 	});
 
-	var records = new Backbone.Collection;
+	var RecordsCollection = Backbone.Collection.extend({
+		model: Record
+	});
+	var records = new RecordsCollection;
 
-	var AddRecordView = Backbone.View.extend({
-		el: $('#mod-add'),
+	records.on('add', function(record) {
+		recordView.render(record);
+	});
 
-		initialize: function(rectable) {
+	var RecordView = Backbone.View.extend({
+		template: $('#tpl-record').html(),
+
+		render: function(record) {
 			var self = this;
 
-			self.template = _.template($('#tpl-record-row').html());
+			var tpl = _.template(self.template);
 
-			self.recbody = rectable.find('tbody');
+			$('#records tbody').append(tpl(
+				record.toJSON()
+			));
 
-			self.form = self.$el.find('form');
+			return self;
+		}
+	});
+	var recordView = new RecordView;
 
-			self.form.submit(function(e) {
-				e.preventDefault();
-				self._onSubmit(e);
-			});
+	var RecordsView = Backbone.View.extend({
+		el: $('#records'),
+
+		initialize: function() {
+			var self = this;
+
+			self.getRecords();
 		},
+
+		getRecords: function() {
+			$.getJSON(URL_RECORD_ALL, function(response) {
+				_.each(response.records, function(record) {
+					records.add(new Record({
+						usrid: record.usrid,
+						usrnm: record.usrnm,
+						fname: record.fname,
+						lname: record.lname
+					}));
+				});
+			});
+		}
+	});
+	var recordsView = new RecordsView;
+
+	var ModalView = Backbone.View.extend({
+		tpl: _.template($('#tpl-modal-form').html()),
 
 		show: function() {
 			this.$el.modal('show');
@@ -28,89 +62,101 @@
 
 		hide: function() {
 			this.$el.modal('hide');
+		}
+	});
+
+	var AddRecordView = ModalView.extend({
+		el: $('#modal-form-add'),
+
+		events: {
+			'submit form': 'onSubmit'
 		},
 
-		clear: function() {
-			this.form.find('input[type=text]').val('');
-		},
-
-		_onSubmit: function(e) {
+		render: function() {
 			var self = this;
 
-			var data = self.form.serialize();
-			
-			$.post(URL_RECORD_ADD, data, function(response) {
-				self.recbody.append(self.template({
-					record: response
+			self.$el.find('.modal-body').html(self.tpl({
+				usrnm: '',
+				fname: '',
+				lname: ''
+			}));
+
+			return self;
+		},
+		
+		onSubmit: function(e) {
+			e.preventDefault();
+
+			var form = this.$el.find('form');
+
+			$.post(URL_RECORD_ADD, form.serialize(), function(response) {
+				records.add(new Record({
+					usrid: response.usrid,
+					usrnm: response.usrnm,
+					fname: response.fname,
+					lname: response.lname
 				}));
 			}, 'json');
 
-			self.clear();		
-			self.hide();
+			this.hide();
 		}
 	});
-	var addRecView = new AddRecordView($('#records'));
-	
-	var RecordsView = Backbone.View.extend({
-		el: $('#records'),
-		
-		initialize: function() {
+	var addRecordView = new AddRecordView;
+
+	var EdtRecordView = ModalView.extend({
+		el: $('#modal-form-edt'),
+
+		events: {
+			'submit form': 'onSubmit'
+		},
+
+		render: function() {
 			var self = this;
 
-			$('#btn-add').click(function(e) {
-				addRecView.show();
-			});
+			self.$el.find('.modal-body').html(self.tpl(
+				self.record.toJSON()
+			));
 
-			$('#btn-del').click(function(e) {
-				self._onClick_Del(e);				
-			});
-
-			$('.btn-edt').live('click', function(e) {
-				self.editrow = $(this);
-				self._onClick_Edt(e);
-			});
-
-			$('#ckbx-all').click(function(e) {
-				self.selectall = $(this).is(':checked');
-				self._onClick_All(e);
-			});
-
-			$('.ckbx-usr').live('click', function(e) {
-				self._onClick_Usr(e);
-			});
+			return self;
 		},
 
-		_onClick_Del: function(e) {
-			var data = $('#form-records').serialize();
+		onSubmit: function(e) {
+			e.preventDefault();
 
-			$.post(URL_RECORD_DEL, data, function(response) {
-				$('.ckbx-usr:checked').each(function() {
-					var $row = $(this).parent().parent();
-
-					$row.fadeOut('slow', function() {
-						$row.remove();
-					});
-				});
-			}, 'json');
-		},
-
-		_onClick_Edt: function(e) {
-			alert(this.editrow.attr('value'));
-		},
-
-		_onClick_All: function(e) {
-			var self = this;
-
-			if (self.selectall) {
-				$('.ckbx-usr').attr('checked', true);
-			} else {
-				$('.ckbx-usr').attr('checked', false);
-			}
-		},
-
-		_onClick_Usr: function(e) {
-		},
+			var form = this.$el.find('form');
+			alert(form.serialize());
+		}
 	});
-	var recordView = new RecordsView;
+	var edtRecordView = new EdtRecordView;
+
+	var DocumentView = Backbone.View.extend({
+		el: $('#body'),
+
+		events: {
+			'click #btn-add': 'onClick_Add',
+			'click #btn-del': 'onClick_Del',
+			'click .btn-edt': 'onClick_Edt'
+		},
+
+		onClick_Add: function() {
+			addRecordView.render();
+			addRecordView.show();
+		},
+
+		onClick_Del: function() {
+			alert('del');
+		},
+
+		onClick_Edt: function(e) {
+			e.preventDefault();
+			var $t = $(e.target);
+
+			var record = records.get($t.attr('value'));
+			edtRecordView.record = record;
+			edtRecordView.render();
+			edtRecordView.show();
+		}
+	});
+	var documentView = new DocumentView;
 		
 });})(jQuery);
