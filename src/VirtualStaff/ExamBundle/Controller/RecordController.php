@@ -101,6 +101,11 @@ class RecordController extends Controller {
 	$rec->setLname($lname);
 	$em->flush();
 
-	return new Response(json_encode(array()));
+	return new Response(json_encode(array(
+	    'usrid' => $usrid,
+ 	    'usrnm' => $usrnm,
+            'fname' => $fname,
+            'lname' => $lname
+	)));
     }
 }

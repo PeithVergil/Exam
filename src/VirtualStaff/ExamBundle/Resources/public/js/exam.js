@@ -124,9 +124,23 @@
 		onSubmit: function(e) {
 			e.preventDefault();
 
+			var self = this;
+
 			var form = this.$el.find('form');
 
 			$.post(URL_RECORD_EDT, form.serialize(), function(response) {
+				var row = self.target.parent().parent();
+
+				row.find('td:eq(2)').html(response.usrnm);
+				row.find('td:eq(3)').html(response.fname);
+				row.find('td:eq(4)').html(response.lname);
+
+				// Update model
+				self.record.set({
+					usrnm: response.usrnm,
+					fname: response.fname,
+					lname: response.lname
+				});
 			}, 'json');
 
 			this.hide();
@@ -168,6 +182,7 @@
 
 			var record = records.get($t.attr('value'));
 			edtRecordView.record = record;
+			edtRecordView.target = $t;
 			edtRecordView.render();
 			edtRecordView.show();
 		}
